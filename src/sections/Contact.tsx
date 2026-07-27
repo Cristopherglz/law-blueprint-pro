@@ -18,7 +18,7 @@ const Contact = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const subjectLabels: Record<string, string> = { contratos: 'Redacción de contratos', laboral: 'Derecho Laboral', mediacion: 'Mediación', tributario: 'Derecho Financiero y Tributario', emprendimiento: 'Asistencia legal para emprendedores', transito: 'Accidentes de tránsito', penal: 'Defensa penal', administrativo: 'Derecho Administrativo', otro: 'Otro' };
+    const subjectLabels: Record<string, string> = { sociedades: 'Constitución de sociedades', marcas: 'Registro de marcas y patentes', franquicias: 'Derecho de franquicias', tributario: 'Derecho Financiero y Tributario', emprendimiento: 'Asistencia legal para tu emprendimiento', automotor: 'Gestoría automotor', penal: 'Defensa penal', administrativo: 'Derecho Administrativo', otro: 'Otro' };
     const msg = `Hola! Mi nombre es ${formData.name}.\n\nEmail: ${formData.email}\n${formData.phone ? `Teléfono: ${formData.phone}\n` : ''}Asunto: ${subjectLabels[formData.subject] || formData.subject}\n\nMensaje:\n${formData.message}`;
     window.open(`https://api.whatsapp.com/send/?phone=5493764327285&text=${encodeURIComponent(msg)}&type=phone_number&app_absent=0`, '_blank');
   };
@@ -98,12 +98,12 @@ const Contact = () => {
                     <label htmlFor="subject" className="block font-body text-sm font-medium text-muted-foreground mb-2">Asunto *</label>
                     <select id="subject" name="subject" value={formData.subject} onChange={handleChange} required className="w-full px-4 py-3 bg-background border border-border font-body text-base text-foreground focus:outline-none focus:border-foreground focus:ring-1 focus:ring-foreground transition-colors">
                       <option value="">Seleccione un asunto</option>
-                      <option value="contratos">Redacción de contratos</option>
-                      <option value="laboral">Derecho Laboral</option>
-                      <option value="mediacion">Mediación</option>
+                      <option value="sociedades">Constitución de sociedades</option>
+                      <option value="marcas">Registro de marcas y patentes</option>
+                      <option value="franquicias">Derecho de franquicias</option>
                       <option value="tributario">Derecho Financiero y Tributario</option>
-                      <option value="emprendimiento">Asistencia legal para emprendedores</option>
-                      <option value="transito">Accidentes de tránsito</option>
+                      <option value="emprendimiento">Asistencia legal para tu emprendimiento</option>
+                      <option value="automotor">Gestoría automotor</option>
                       <option value="penal">Defensa penal</option>
                       <option value="administrativo">Derecho Administrativo</option>
                       <option value="otro">Otro</option>
