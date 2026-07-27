@@ -60,7 +60,7 @@ const EbooksBanner = () => {
                   </span>
                 </span>
                 <span className="font-body text-sm text-primary-foreground/50">
-                  + de 10 títulos disponibles
+                  Guía práctica de Contratos disponible
                 </span>
               </div>
             </div>
