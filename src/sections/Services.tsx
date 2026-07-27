@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { FileText, Briefcase, FolderCheck, Landmark, Rocket, Car, Shield, Building } from 'lucide-react';
+import { Store, BadgeCheck, FolderCheck, Landmark, Rocket, Car, Shield, Building } from 'lucide-react';
 
 const Services = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -12,12 +12,12 @@ const Services = () => {
   }, []);
 
   const services = [
-    { id: 'contratos', icon: FileText, title: 'Redacción de contratos', description: 'Elaboramos un contrato sólido y al resguardo de tus derechos.', whatsappText: 'Hola! Necesito consultar sobre redacción de contratos.' },
-    { id: 'laboral', icon: Briefcase, title: 'Derecho Laboral', description: 'Te asesoramos y representamos en cualquier etapa de tu vida laboral.', whatsappText: 'Hola! Necesito consultar sobre derecho laboral.' },
+    { id: 'franquicias', icon: Store, title: 'Derecho de franquicias', description: 'Asesoramiento integral para franquiciantes y franquiciados: contratos, expansión y cumplimiento.', whatsappText: 'Hola! Necesito consultar sobre derecho de franquicias.' },
+    { id: 'marcas', icon: BadgeCheck, title: 'Registro de marcas y patentes', description: 'Protegemos tu propiedad intelectual: registro de marcas, patentes y defensa ante conflictos.', whatsappText: 'Hola! Necesito consultar sobre registro de marcas y patentes (propiedad intelectual).' },
     { id: 'sociedades', icon: FolderCheck, title: 'Constitución de sociedades', description: 'Gestionamos la constitución y desarrollo de tu sociedad, asociación, cooperativa o mutual.', whatsappText: 'Hola! Necesito consultar sobre Constitución de sociedades' },
     { id: 'tributario', icon: Landmark, title: 'Derecho Financiero y Tributario', description: 'Te representamos ante ARCA (ex AFIP) y otros organismos de recaudación fiscal.', whatsappText: 'Hola! Necesito consultar sobre derecho financiero y tributario.' },
     { id: 'emprendimiento', icon: Rocket, title: 'Asistencia legal para tu emprendimiento', description: 'Apoyo legal integral para emprendedores en todas las etapas del proyecto.', whatsappText: 'Hola! Necesito consultar sobre asistencia legal para emprendedores.' },
-    { id: 'transito', icon: Car, title: 'Accidentes de tránsito', description: 'Defendemos tus derechos tras un accidente, al resguardo de tus intereses.', whatsappText: 'Hola! Necesito consultar sobre accidentes de tránsito.' },
+    { id: 'automotor', icon: Car, title: 'Gestoría automotor', description: 'Transferencias, altas, bajas y todo trámite ante el Registro Automotor, gestionado de punta a punta.', whatsappText: 'Hola! Necesito consultar sobre gestoría automotor.' },
     { id: 'penal', icon: Shield, title: 'Defensa penal', description: 'Protegemos tus derechos en casos penales, asegurando una defensa sólida y eficiente.', whatsappText: 'Hola! Necesito consultar sobre defensa penal.' },
     { id: 'administrativo', icon: Building, title: 'Derecho Administrativo', description: 'Te representamos y asesoramos en trámites y conflictos con organismos estatales.', whatsappText: 'Hola! Necesito consultar sobre derecho administrativo.' },
   ];
