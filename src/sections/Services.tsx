@@ -12,9 +12,9 @@ const Services = () => {
   }, []);
 
   const services = [
-    { id: 'franquicias', icon: Store, title: 'Derecho de franquicias', description: 'Asesoramiento integral para franquiciantes y franquiciados: contratos, expansión y cumplimiento.', whatsappText: 'Hola! Necesito consultar sobre derecho de franquicias.' },
-    { id: 'marcas', icon: BadgeCheck, title: 'Registro de marcas y patentes', description: 'Protegemos tu propiedad intelectual: registro de marcas, patentes y defensa ante conflictos.', whatsappText: 'Hola! Necesito consultar sobre registro de marcas y patentes (propiedad intelectual).' },
     { id: 'sociedades', icon: FolderCheck, title: 'Constitución de sociedades', description: 'Gestionamos la constitución y desarrollo de tu sociedad, asociación, cooperativa o mutual.', whatsappText: 'Hola! Necesito consultar sobre Constitución de sociedades' },
+    { id: 'marcas', icon: BadgeCheck, title: 'Registro de marcas y patentes', description: 'Protegemos tu propiedad intelectual: registro de marcas, patentes y defensa ante conflictos.', whatsappText: 'Hola! Necesito consultar sobre registro de marcas y patentes (propiedad intelectual).' },
+    { id: 'franquicias', icon: Store, title: 'Derecho de franquicias', description: 'Asesoramiento integral para franquiciantes y franquiciados: contratos, expansión y cumplimiento.', whatsappText: 'Hola! Necesito consultar sobre derecho de franquicias.' },
     { id: 'tributario', icon: Landmark, title: 'Derecho Financiero y Tributario', description: 'Te representamos ante ARCA (ex AFIP) y otros organismos de recaudación fiscal.', whatsappText: 'Hola! Necesito consultar sobre derecho financiero y tributario.' },
     { id: 'emprendimiento', icon: Rocket, title: 'Asistencia legal para tu emprendimiento', description: 'Apoyo legal integral para emprendedores en todas las etapas del proyecto.', whatsappText: 'Hola! Necesito consultar sobre asistencia legal para emprendedores.' },
     { id: 'automotor', icon: Car, title: 'Gestoría automotor', description: 'Transferencias, altas, bajas y todo trámite ante el Registro Automotor, gestionado de punta a punta.', whatsappText: 'Hola! Necesito consultar sobre gestoría automotor.' },
