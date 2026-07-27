@@ -37,7 +37,7 @@ const Footer = () => {
             <div className="space-y-3">
               <p className="font-body text-sm text-primary-foreground/40">Av. López y Planes 3887<br />Posadas, Misiones</p>
               <p><a href="tel:+5493764327285" className="font-body text-sm text-primary-foreground/40 hover:text-primary-foreground transition-colors">Teléfono: +54 9 376-4327285</a></p>
-              <p><a href="mailto:drgonzalez@abogadogonzalez.com" className="font-body text-sm text-primary-foreground/40 hover:text-primary-foreground transition-colors">Email: drgonzalez@abogadogonzalez.com</a></p>
+              <p><a href="mailto:abogadogonzalezok@gmail.com" className="font-body text-sm text-primary-foreground/40 hover:text-primary-foreground transition-colors">Email: abogadogonzalezok@gmail.com</a></p>
               <p className="font-body text-sm text-primary-foreground/40">Lunes a Viernes: 8:00 AM – 20:00 PM</p>
             </div>
           </div>
