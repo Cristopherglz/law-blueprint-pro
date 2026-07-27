@@ -9,7 +9,6 @@ const plans = [
     icon: Briefcase,
     name: 'Plan PyME',
     tagline: 'Asistencia legal integral para pequeñas y medianas empresas',
-    price: 60000,
     highlight: false,
     features: [
       'Consultas jurídicas ilimitadas',
@@ -25,7 +24,6 @@ const plans = [
     icon: Building2,
     name: 'Plan Corporativo',
     tagline: 'Cobertura legal completa para grandes empresas',
-    price: 240000,
     highlight: true,
     features: [
       'Consultas jurídicas ilimitadas y prioritarias',
@@ -38,9 +36,6 @@ const plans = [
     whatsappText: 'Hola! Quiero contratar el Plan Corporativo de asistencia legal mensual.',
   },
 ];
-
-const formatPrice = (n: number) =>
-  new Intl.NumberFormat('es-AR', { maximumFractionDigits: 0 }).format(n);
 
 const Plans = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -93,13 +88,6 @@ const Plans = () => {
                 <p className={`font-body text-sm mb-6 ${plan.highlight ? 'text-primary-foreground/70' : 'text-muted-foreground'}`}>
                   {plan.tagline}
                 </p>
-
-                <div className="mb-8">
-                  <div className="flex items-baseline gap-2">
-                    <span className="font-display text-5xl">${formatPrice(plan.price)}</span>
-                    <span className={`font-body text-sm ${plan.highlight ? 'text-primary-foreground/60' : 'text-muted-foreground'}`}>ARS / mes</span>
-                  </div>
-                </div>
 
                 <ul className="space-y-3 mb-10 flex-1">
                   {plan.features.map((f) => (
