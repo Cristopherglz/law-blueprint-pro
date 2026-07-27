@@ -27,7 +27,7 @@ const Contact = () => {
     { icon: MapPin, title: 'Dirección', content: 'Av. López y Planes 3887, Posadas, Misiones' },
     { icon: Phone, title: 'Teléfono', content: '+54 9 376-4327285', href: 'tel:+5493764327285' },
     { icon: Mail, title: 'Email', content: 'abogadogonzalezok@gmail.com', href: 'mailto:abogadogonzalezok@gmail.com' },
-    { icon: Clock, title: 'Horario de atención', content: 'Lunes a Viernes: 8:00 AM – 20:00 PM' },
+    { icon: Clock, title: 'Horario de atención', content: 'Lunes a Viernes: 8:00 AM – 20:00 PM · Sábados y domingos: solo emergencias' },
   ];
 
   return (
