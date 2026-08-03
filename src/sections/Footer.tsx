@@ -69,6 +69,9 @@ const Footer = () => {
         <div className="container-legal py-6">
           <div className={`flex flex-col md:flex-row items-center justify-between gap-4 transition-all duration-600 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'}`} style={{ transitionDelay: '600ms' }}>
             <p className="font-body text-xs text-primary-foreground/30">Copyright © {new Date().getFullYear()} Cristopher González - Abogado</p>
+            <a href="https://komunacreativa.com" target="_blank" rel="noopener noreferrer" className="font-body text-xs text-primary-foreground/30 hover:text-primary-foreground transition-colors">
+              <span className="grayscale">✨</span> Desarrollado por Komuna Creativa
+            </a>
             <div className="flex flex-wrap items-center justify-center gap-4 md:gap-6">
               <a href="/terminos-y-condiciones.html" className="font-body text-xs text-primary-foreground/30 hover:text-primary-foreground transition-colors">Términos y Condiciones</a>
               <a href="/politica-de-privacidad.html" className="font-body text-xs text-primary-foreground/30 hover:text-primary-foreground transition-colors">Política de privacidad</a>
