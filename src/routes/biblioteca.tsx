@@ -1,8 +1,12 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, BookOpen, FileText, Download } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
+import { useState } from "react";
+import { ArrowLeft, BookOpen, FileText, Download, ShoppingCart } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/sections/Footer";
 import ebookCover from "@/assets/ebook-contratos.png.asset.json";
+import { listEbooks, startCheckout } from "@/lib/ebooks.functions";
 
 export const Route = createFileRoute("/biblioteca")({
   component: Biblioteca,
@@ -28,6 +32,104 @@ export const Route = createFileRoute("/biblioteca")({
 
 const whatsappBase =
   "https://api.whatsapp.com/send/?phone=5493764327285&type=phone_number&app_absent=0&text=";
+
+const money = (value: number, currency = "ARS") =>
+  new Intl.NumberFormat("es-AR", { style: "currency", currency, maximumFractionDigits: 0 }).format(value);
+
+function PaidEbooks() {
+  const fetchEbooks = useServerFn(listEbooks);
+  const checkout = useServerFn(startCheckout);
+  const { data: ebooks } = useQuery({ queryKey: ["public-ebooks"], queryFn: () => fetchEbooks() });
+
+  const [openId, setOpenId] = useState<string | null>(null);
+  const [buyer, setBuyer] = useState({ name: "", email: "" });
+  const [status, setStatus] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  if (!ebooks || ebooks.length === 0) return null;
+
+  async function onBuy(ebookId: string) {
+    setLoading(true);
+    setStatus(null);
+    try {
+      const result = await checkout({ data: { ebookId, name: buyer.name, email: buyer.email } });
+      if (result.status === "ready" && result.checkoutUrl) {
+        window.location.href = result.checkoutUrl;
+        return;
+      }
+      setStatus(
+        "El pago online todavía no está habilitado. Escribinos por WhatsApp y coordinamos la compra.",
+      );
+    } catch (error) {
+      setStatus(error instanceof Error ? error.message : "No pudimos iniciar el pago.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  return (
+    <section className="mt-20 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+      {ebooks.map((ebook) => (
+        <article key={ebook.id} className="bg-secondary border border-border p-6 flex flex-col">
+          {ebook.coverUrl && (
+            <img
+              src={ebook.coverUrl}
+              alt={`Portada del ebook ${ebook.title}`}
+              className="w-full h-56 object-contain mb-5"
+              loading="lazy"
+            />
+          )}
+          <h3 className="font-display text-2xl leading-tight mb-3">{ebook.title}</h3>
+          <p className="font-body text-sm text-muted-foreground leading-relaxed mb-5 flex-1">
+            {ebook.description}
+          </p>
+          <p className="font-display text-2xl mb-5">{money(ebook.price, ebook.currency)}</p>
+
+          {openId === ebook.id ? (
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                void onBuy(ebook.id);
+              }}
+              className="space-y-3"
+            >
+              <input
+                required
+                placeholder="Tu nombre"
+                value={buyer.name}
+                onChange={(e) => setBuyer({ ...buyer, name: e.target.value })}
+                className="w-full border border-border bg-background px-4 py-3 font-body text-sm"
+              />
+              <input
+                required
+                type="email"
+                placeholder="Tu email"
+                value={buyer.email}
+                onChange={(e) => setBuyer({ ...buyer, email: e.target.value })}
+                className="w-full border border-border bg-background px-4 py-3 font-body text-sm"
+              />
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full inline-flex items-center justify-center gap-2 bg-primary text-primary-foreground px-6 py-3.5 font-body text-sm font-medium disabled:opacity-60"
+              >
+                <ShoppingCart className="w-4 h-4" /> {loading ? "Redirigiendo…" : "Pagar con Mercado Pago"}
+              </button>
+              {status && <p className="font-body text-xs text-muted-foreground">{status}</p>}
+            </form>
+          ) : (
+            <button
+              onClick={() => setOpenId(ebook.id)}
+              className="w-full inline-flex items-center justify-center gap-2 bg-primary text-primary-foreground px-6 py-3.5 font-body text-sm font-medium"
+            >
+              <ShoppingCart className="w-4 h-4" /> Comprar ebook
+            </button>
+          )}
+        </article>
+      ))}
+    </section>
+  );
+}
 
 function Biblioteca() {
   return (
@@ -87,6 +189,8 @@ function Biblioteca() {
               </a>
             </div>
           </article>
+
+          <PaidEbooks />
 
           <div className="mt-20 p-10 lg:p-14 bg-legal-dark text-primary-foreground rounded-2xl text-center">
             <FileText className="w-10 h-10 mx-auto mb-5 opacity-80" strokeWidth={1.2} />
