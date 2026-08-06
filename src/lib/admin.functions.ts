@@ -156,26 +156,22 @@ export const saveEbook = createServerFn({ method: "POST" })
     await assertAdmin(context as any);
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
-    const payload: Record<string, unknown> = {
+    const payload = {
       title: data.title,
       description: data.description,
       price: data.price,
       currency: data.currency,
       is_published: data.isPublished,
+      ...(data.filePath ? { file_path: data.filePath } : {}),
+      ...(data.coverPath ? { cover_url: data.coverPath } : {}),
     };
-    if (data.filePath) payload["file_path"] = data.filePath;
-    if (data.coverPath) payload["cover_url"] = data.coverPath;
 
     if (data.id) {
       const { error } = await supabaseAdmin.from("ebooks").update(payload).eq("id", data.id);
       if (error) throw error;
       return { id: data.id };
     }
-    const { data: created, error } = await supabaseAdmin
-      .from("ebooks")
-      .insert(payload as never)
-      .select("id")
-      .single();
+    const { data: created, error } = await supabaseAdmin.from("ebooks").insert(payload).select("id").single();
     if (error) throw error;
     return { id: created.id };
   });
