@@ -78,7 +78,7 @@ export const getAdminOverview = createServerFn({ method: "POST" })
       (ebooks ?? []).map(async (e) => {
         let coverUrl: string | null = null;
         if (e.cover_url) {
-          coverUrl = e.cover_url.startsWith("http")
+          coverUrl = e.cover_url.startsWith("http") || e.cover_url.startsWith("/")
             ? e.cover_url
             : ((
                 await supabaseAdmin.storage.from(EBOOK_BUCKET).createSignedUrl(e.cover_url, 60 * 60 * 6)

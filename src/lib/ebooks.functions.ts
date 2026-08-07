@@ -29,7 +29,7 @@ export const listEbooks = createServerFn({ method: "GET" }).handler(async (): Pr
     (data ?? []).map(async (row) => {
       let coverUrl: string | null = null;
       if (row.cover_url) {
-        if (row.cover_url.startsWith("http")) {
+        if (row.cover_url.startsWith("http") || row.cover_url.startsWith("/")) {
           coverUrl = row.cover_url;
         } else {
           const signed = await supabaseAdmin.storage
