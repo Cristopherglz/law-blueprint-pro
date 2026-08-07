@@ -168,7 +168,7 @@ function AdminPanel() {
 
   return (
     <div className="min-h-screen bg-secondary/60">
-      <header className="sticky top-0 z-30 bg-legal-dark/95 backdrop-blur text-primary-foreground border-b border-primary-foreground/10">
+      <header className="sticky top-0 z-30 bg-primary text-primary-foreground backdrop-blur border-b border-primary-foreground/10">
         <div className="container-legal flex flex-wrap items-center justify-between gap-4 py-5">
           <div className="flex items-center gap-3">
             <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-foreground/10">
@@ -302,7 +302,7 @@ function AdminPanel() {
                     </div>
                   </div>
 
-                  <div className="rounded-2xl bg-legal-dark text-primary-foreground p-6 shadow-sm">
+                  <div className="rounded-2xl bg-primary text-primary-foreground p-6 shadow-sm">
                     <p className="font-body text-xs uppercase tracking-widest text-primary-foreground/60">
                       Más vendido
                     </p>
