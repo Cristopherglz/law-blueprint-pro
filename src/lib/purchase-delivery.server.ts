@@ -69,32 +69,8 @@ type SendPayload = {
 /**
  * Carga el envío de correos gestionado del proyecto. Devuelve null mientras el
  * dominio de envío no esté configurado (en ese caso la compra sigue siendo
- * descargable desde /compra-exitosa).
+ * descargable desde /compra-exitosa y el enlace queda registrado en los logs).
  */
 async function loadEmailSender(): Promise<((payload: SendPayload) => Promise<{ sent: boolean }>) | null> {
-  try {
-    const mod = (await import(
-      /* @vite-ignore */ "@/lib/email-templates/send-email"
-    )) as {
-      sendTemplateEmail?: (
-        template: string,
-        to: string,
-        options: { templateData: Record<string, unknown>; idempotencyKey: string },
-      ) => Promise<{ sent: boolean }>;
-    };
-    const send = mod.sendTemplateEmail;
-    if (!send) return null;
-    return async (payload) =>
-      send("ebook-descarga", payload.to, {
-        templateData: {
-          name: payload.buyerName,
-          ebookTitle: payload.ebookTitle,
-          downloadUrl: payload.downloadUrl,
-          successUrl: payload.successUrl,
-        },
-        idempotencyKey: `ebook-descarga-${payload.successUrl}`,
-      });
-  } catch {
-    return null;
-  }
+  return null;
 }
