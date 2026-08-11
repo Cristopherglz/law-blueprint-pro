@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-async function markPaid(paymentId: string) {
+async function markPaid(paymentId: string, origin: string) {
   const { mpFetch, getMercadoPagoToken } = await import("@/lib/ebooks.server");
   if (!getMercadoPagoToken()) return;
   const payment = await mpFetch(`/v1/payments/${paymentId}`);
@@ -9,7 +9,7 @@ async function markPaid(paymentId: string) {
 
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
   const status = payment.status === "approved" ? "paid" : payment.status === "rejected" ? "rejected" : "pending";
-  await supabaseAdmin
+  const { error } = await supabaseAdmin
     .from("orders")
     .update({
       status,
@@ -17,6 +17,15 @@ async function markPaid(paymentId: string) {
       paid_at: status === "paid" ? new Date().toISOString() : null,
     })
     .eq("id", orderId);
+  if (error) {
+    console.error("webhook: no se pudo actualizar la orden", error);
+    return;
+  }
+
+  if (status === "paid") {
+    const { deliverPurchaseByEmail } = await import("@/lib/purchase-delivery.server");
+    await deliverPurchaseByEmail(String(orderId), origin);
+  }
 }
 
 export const Route = createFileRoute("/api/public/mercadopago-webhook")({
@@ -35,7 +44,7 @@ export const Route = createFileRoute("/api/public/mercadopago-webhook")({
           const topic = (body["type"] as string) ?? url.searchParams.get("topic") ?? "payment";
 
           if (paymentId && String(topic).includes("payment")) {
-            await markPaid(String(paymentId));
+            await markPaid(String(paymentId), url.origin);
           }
           return new Response("ok");
         } catch (error) {
