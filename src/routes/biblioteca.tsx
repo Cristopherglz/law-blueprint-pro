@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
-import { ArrowLeft, BookOpen, FileText, ShoppingCart, ShieldCheck } from "lucide-react";
+import { ArrowLeft, BookOpen, FileText, ShoppingCart, ShieldCheck, Mail, Download } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/sections/Footer";
 import ebookCover from "@/assets/ebook-contratos.png.asset.json";
@@ -106,7 +106,7 @@ function BuyForm({ ebook, size = "md" }: { ebook: PublicEbook; size?: "md" | "sm
         <ShoppingCart className="w-4 h-4" /> {loading ? "Redirigiendo…" : "Pagar con Mercado Pago"}
       </button>
       <p className="font-body text-xs text-muted-foreground flex items-center gap-1.5">
-        <ShieldCheck className="w-3.5 h-3.5" /> Recibís el enlace de descarga al confirmarse el pago.
+        <ShieldCheck className="w-3.5 h-3.5" /> Pago protegido por Mercado Pago.
       </p>
       {status && <p className="font-body text-xs text-destructive">{status}</p>}
     </form>
@@ -143,6 +143,22 @@ function Biblioteca() {
               Recursos prácticos redactados por nuestro estudio para ayudarte a comprender la ley y
               tomar mejores decisiones. Comprá con Mercado Pago y descargá al instante.
             </p>
+          </div>
+
+          <div className="mb-10 border border-border bg-secondary/60 p-6 sm:p-7">
+            <p className="font-body text-sm font-medium text-foreground mb-3">¿Cómo recibís tu ebook?</p>
+            <ul className="space-y-2.5">
+              <li className="flex items-start gap-3 font-body text-sm text-muted-foreground">
+                <Download className="w-4 h-4 mt-0.5 shrink-0 text-foreground" />
+                Una vez realizado el pago vas a ser redirigido automáticamente a una página donde podés
+                descargar el ebook al instante.
+              </li>
+              <li className="flex items-start gap-3 font-body text-sm text-muted-foreground">
+                <Mail className="w-4 h-4 mt-0.5 shrink-0 text-foreground" />
+                Además te enviamos a tu correo electrónico un enlace para descargar el ebook cuando
+                quieras. Revisá también la carpeta de spam o correo no deseado.
+              </li>
+            </ul>
           </div>
 
           <article className="grid lg:grid-cols-[auto_1fr] gap-10 lg:gap-16 items-center bg-secondary border border-border p-8 sm:p-12">

@@ -60,6 +60,7 @@ export type Database = {
           buyer_name: string | null
           created_at: string
           currency: string
+          delivery_email_sent_at: string | null
           download_token: string
           ebook_id: string
           id: string
@@ -74,6 +75,7 @@ export type Database = {
           buyer_name?: string | null
           created_at?: string
           currency?: string
+          delivery_email_sent_at?: string | null
           download_token?: string
           ebook_id: string
           id?: string
@@ -88,6 +90,7 @@ export type Database = {
           buyer_name?: string | null
           created_at?: string
           currency?: string
+          delivery_email_sent_at?: string | null
           download_token?: string
           ebook_id?: string
           id?: string

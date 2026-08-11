@@ -1,0 +1,1 @@
+ALTER TABLE public.orders ADD COLUMN IF NOT EXISTS delivery_email_sent_at TIMESTAMP WITH TIME ZONE;

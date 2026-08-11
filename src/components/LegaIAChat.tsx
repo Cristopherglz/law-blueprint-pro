@@ -1,9 +1,9 @@
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport, type UIMessage } from "ai";
-import { MessageCircle, X, RotateCcw } from "lucide-react";
+import { MessageCircle, X, RotateCcw, AlertTriangle, Phone } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import legaiaLogo from "@/assets/legaia-logo.png";
+import legaiaLogo from "@/assets/legaia-icon.png.asset.json";
 import {
   Conversation,
   ConversationContent,
@@ -19,6 +19,10 @@ import {
 import { Shimmer } from "@/components/ai-elements/shimmer";
 
 const STORAGE_KEY = "legaia.conversation.v1";
+
+const WHATSAPP_URL =
+  "https://api.whatsapp.com/send/?phone=5493764327285&type=phone_number&app_absent=0&text=" +
+  encodeURIComponent("Hola! Estuve consultando con LegaIA y quiero hablar con el Abg. González.");
 
 const SUGGESTIONS = [
   "¿Cómo registro mi marca en Argentina?",
@@ -42,6 +46,7 @@ function loadStoredMessages(): UIMessage[] {
 const LegaIAChat = () => {
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState("");
+  const [showWarning, setShowWarning] = useState(false);
   const [initialMessages] = useState<UIMessage[]>(() => loadStoredMessages());
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
@@ -108,10 +113,10 @@ const LegaIAChat = () => {
           <header className="flex items-center gap-3 border-b border-border bg-primary px-5 py-4 text-primary-foreground">
             <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary-foreground">
               <img
-                src={legaiaLogo}
+                src={legaiaLogo.url}
                 alt="LegaIA"
-                width={816}
-                height={816}
+                width={512}
+                height={512}
                 loading="lazy"
                 className="h-6 w-6 object-contain"
               />
@@ -122,6 +127,15 @@ const LegaIAChat = () => {
                 Asistente legal del Abg. Cristopher González
               </p>
             </div>
+            <button
+              type="button"
+              onClick={() => setShowWarning((value) => !value)}
+              aria-label="Advertencia de uso"
+              aria-expanded={showWarning}
+              className="rounded-full p-2 text-primary-foreground/70 transition-colors hover:bg-primary-foreground/10 hover:text-primary-foreground"
+            >
+              <AlertTriangle className="h-4 w-4" />
+            </button>
             {messages.length > 0 && (
               <button
                 type="button"
@@ -141,6 +155,22 @@ const LegaIAChat = () => {
               <X className="h-4 w-4" />
             </button>
           </header>
+
+          {showWarning && (
+            <div className="border-b border-border bg-secondary px-5 py-4">
+              <p className="font-body text-xs leading-relaxed text-muted-foreground">
+                <span className="font-medium text-foreground">Advertencia de uso:</span> LegaIA brinda
+                orientación informativa general y <strong>no reemplaza la consulta profesional</strong>.
+                Puede cometer errores o dar información incompleta, por lo que sus respuestas deben ser
+                verificadas con el Abg. Cristopher González antes de tomar cualquier decisión legal.
+                Consultá las{" "}
+                <a href="/terminos-y-condiciones.html" className="underline hover:no-underline">
+                  condiciones de uso
+                </a>
+                .
+              </p>
+            </div>
+          )}
 
           <Conversation className="flex-1 bg-secondary/40">
             <ConversationContent className="gap-4 p-4">
@@ -204,6 +234,14 @@ const LegaIAChat = () => {
           </Conversation>
 
           <div className="border-t border-border bg-background p-3">
+            <a
+              href={WHATSAPP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mb-3 flex items-center justify-center gap-2 bg-primary px-4 py-3 font-body text-sm font-medium text-primary-foreground transition-colors hover:bg-foreground/85"
+            >
+              <Phone className="h-4 w-4" /> Hablar con el Abg. González · +54 9 376-4327285
+            </a>
             <PromptInput
               onSubmit={(_message, event) => {
                 event.preventDefault();
@@ -225,6 +263,14 @@ const LegaIAChat = () => {
                 />
               </PromptInputFooter>
             </PromptInput>
+            <button
+              type="button"
+              onClick={() => setShowWarning((value) => !value)}
+              className="mt-2 flex w-full items-center justify-center gap-1.5 font-body text-[11px] text-muted-foreground transition-colors hover:text-foreground"
+            >
+              <AlertTriangle className="h-3 w-3" /> Advertencia de uso: LegaIA puede cometer errores y no
+              reemplaza una consulta profesional
+            </button>
           </div>
         </div>
       )}

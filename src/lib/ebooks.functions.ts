@@ -162,6 +162,12 @@ export const getPurchase = createServerFn({ method: "POST" })
             .from("orders")
             .update({ status: "paid", paid_at: new Date().toISOString(), mp_payment_id: String(data.paymentId) })
             .eq("id", order.id);
+          try {
+            const { deliverPurchaseByEmail } = await import("./purchase-delivery.server");
+            await deliverPurchaseByEmail(order.id, new URL(getRequest().url).origin);
+          } catch (mailError) {
+            console.error("no se pudo enviar el email de descarga", mailError);
+          }
         }
       } catch (mpError) {
         console.error("payment verification failed", mpError);
