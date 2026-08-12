@@ -109,7 +109,7 @@ const LegaIAChat = () => {
       </button>
 
       {open && (
-        <div className="fixed inset-0 z-50 flex flex-col overflow-hidden border-border bg-background shadow-[0_35px_90px_-30px_rgba(0,0,0,0.6)] sm:inset-auto sm:bottom-44 sm:right-6 sm:top-6 sm:h-auto sm:max-h-[min(78vh,680px)] sm:w-[min(440px,calc(100vw-3rem))] sm:rounded-2xl sm:border">
+        <div className="fixed inset-0 z-50 flex flex-col overflow-hidden border-border bg-background shadow-[0_35px_90px_-30px_rgba(0,0,0,0.6)] sm:inset-auto sm:bottom-44 sm:right-6 sm:h-[min(680px,calc(100dvh-14rem))] sm:w-[min(440px,calc(100vw-3rem))] sm:rounded-2xl sm:border">
           <header className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 border-b border-border bg-primary px-4 py-3 text-primary-foreground">
             <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary-foreground">
               <img
