@@ -109,24 +109,34 @@ const LegaIAChat = () => {
       </button>
 
       {open && (
-        <div className="fixed inset-x-3 bottom-44 z-50 flex h-[min(70vh,600px)] flex-col overflow-hidden rounded-2xl border border-border bg-background shadow-[0_35px_90px_-30px_rgba(0,0,0,0.6)] sm:inset-x-auto sm:right-6 sm:w-[420px]">
-          <header className="flex items-center gap-3 border-b border-border bg-primary px-5 py-4 text-primary-foreground">
-            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary-foreground">
+        <div className="fixed inset-0 z-50 flex flex-col overflow-hidden border-border bg-background shadow-[0_35px_90px_-30px_rgba(0,0,0,0.6)] sm:inset-auto sm:bottom-44 sm:right-6 sm:h-[min(78vh,680px)] sm:w-[min(440px,calc(100vw-3rem))] sm:rounded-2xl sm:border">
+          <header className="grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 border-b border-border bg-primary px-4 py-3 text-primary-foreground">
+            <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary-foreground">
               <img
                 src={legaiaLogo.url}
                 alt="LegaIA"
                 width={512}
                 height={512}
                 loading="lazy"
-                className="h-6 w-6 object-contain"
+                className="h-5 w-5 object-contain"
               />
             </span>
-            <div className="min-w-0 flex-1">
-              <p className="font-display text-lg leading-tight">LegaIA</p>
-              <p className="font-body text-xs text-primary-foreground/70">
-                Asistente legal del Abg. Cristopher González
+            <div className="min-w-0">
+              <p className="font-display text-base leading-tight">LegaIA</p>
+              <p className="truncate font-body text-[11px] text-primary-foreground/70">
+                Asistente legal · Abg. Cristopher González
               </p>
             </div>
+            <div className="flex shrink-0 items-center">
+            <a
+              href={WHATSAPP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Hablar por WhatsApp con el Abg. González"
+              className="rounded-full p-2 text-primary-foreground/70 transition-colors hover:bg-primary-foreground/10 hover:text-primary-foreground"
+            >
+              <Phone className="h-4 w-4" />
+            </a>
             <button
               type="button"
               onClick={() => setShowWarning((value) => !value)}
@@ -154,6 +164,7 @@ const LegaIAChat = () => {
             >
               <X className="h-4 w-4" />
             </button>
+            </div>
           </header>
 
           {showWarning && (
@@ -172,8 +183,8 @@ const LegaIAChat = () => {
             </div>
           )}
 
-          <Conversation className="flex-1 bg-secondary/40">
-            <ConversationContent className="gap-4 p-4">
+          <Conversation className="min-h-0 flex-1 bg-secondary/40">
+            <ConversationContent className="gap-4 p-4 pb-2">
               {messages.length === 0 ? (
                 <div className="space-y-4 py-4">
                   <p className="font-body text-sm leading-relaxed text-muted-foreground">
@@ -233,15 +244,7 @@ const LegaIAChat = () => {
             <ConversationScrollButton />
           </Conversation>
 
-          <div className="border-t border-border bg-background p-3">
-            <a
-              href={WHATSAPP_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mb-3 flex items-center justify-center gap-2 bg-primary px-4 py-3 font-body text-sm font-medium text-primary-foreground transition-colors hover:bg-foreground/85"
-            >
-              <Phone className="h-4 w-4" /> Hablar con el Abg. González · +54 9 376-4327285
-            </a>
+          <div className="shrink-0 border-t border-border bg-background px-3 pb-3 pt-2">
             <PromptInput
               onSubmit={(_message, event) => {
                 event.preventDefault();
@@ -253,6 +256,8 @@ const LegaIAChat = () => {
                 value={input}
                 onChange={(event) => setInput(event.target.value)}
                 placeholder="Escribí tu consulta legal..."
+                rows={1}
+                className="max-h-28 min-h-10 text-sm"
                 autoFocus
               />
               <PromptInputFooter className="justify-end">
@@ -263,14 +268,24 @@ const LegaIAChat = () => {
                 />
               </PromptInputFooter>
             </PromptInput>
-            <button
-              type="button"
-              onClick={() => setShowWarning((value) => !value)}
-              className="mt-2 flex w-full items-center justify-center gap-1.5 font-body text-[11px] text-muted-foreground transition-colors hover:text-foreground"
-            >
-              <AlertTriangle className="h-3 w-3" /> Advertencia de uso: LegaIA puede cometer errores y no
-              reemplaza una consulta profesional
-            </button>
+            <div className="mt-2 flex items-center justify-between gap-2">
+              <a
+                href={WHATSAPP_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex min-w-0 items-center gap-1.5 font-body text-[11px] font-medium text-foreground underline-offset-2 hover:underline"
+              >
+                <Phone className="h-3 w-3 shrink-0" />
+                <span className="truncate">Hablar con el Abg. González</span>
+              </a>
+              <button
+                type="button"
+                onClick={() => setShowWarning((value) => !value)}
+                className="flex shrink-0 items-center gap-1.5 font-body text-[11px] text-muted-foreground transition-colors hover:text-foreground"
+              >
+                <AlertTriangle className="h-3 w-3" /> Advertencia de uso
+              </button>
+            </div>
           </div>
         </div>
       )}
