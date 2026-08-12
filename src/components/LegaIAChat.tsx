@@ -100,7 +100,7 @@ const LegaIAChat = () => {
         type="button"
         onClick={() => setOpen((value) => !value)}
         aria-label={open ? "Cerrar chat con LegaIA" : "Abrir chat con LegaIA"}
-        className="fixed bottom-28 right-6 z-50 flex items-center gap-3 rounded-full bg-primary px-5 py-4 text-primary-foreground shadow-[0_18px_45px_-12px_rgba(0,0,0,0.55)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_24px_55px_-12px_rgba(0,0,0,0.6)]"
+        className={`fixed bottom-28 right-6 z-50 items-center gap-3 rounded-full bg-primary px-5 py-4 text-primary-foreground shadow-[0_18px_45px_-12px_rgba(0,0,0,0.55)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_24px_55px_-12px_rgba(0,0,0,0.6)] ${open ? "hidden sm:flex" : "flex"}`}
       >
         {open ? <X className="h-5 w-5" /> : <MessageCircle className="h-5 w-5" />}
         <span className="hidden font-body text-sm font-medium tracking-wide sm:inline">
