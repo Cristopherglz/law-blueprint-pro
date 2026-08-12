@@ -257,7 +257,7 @@ const LegaIAChat = () => {
                 onChange={(event) => setInput(event.target.value)}
                 placeholder="Escribí tu consulta legal..."
                 rows={1}
-                className="max-h-28 min-h-10 text-sm"
+                className="max-h-28 min-h-0! py-2 text-sm"
                 autoFocus
               />
               <PromptInputFooter className="justify-end">
