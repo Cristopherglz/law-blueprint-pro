@@ -17,7 +17,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as ApiPublicMercadopagoWebhookRouteImport } from './routes/api/public/mercadopago-webhook'
-import { Route as ApiPublicBootstrapAdminRouteImport } from './routes/api/public/bootstrap-admin'
+import { Route as ApiPublicDescargarRouteImport } from './routes/api/public/descargar'
 
 const CompraExitosaRoute = CompraExitosaRouteImport.update({
   id: '/compra-exitosa',
@@ -59,9 +59,9 @@ const ApiPublicMercadopagoWebhookRoute =
     path: '/api/public/mercadopago-webhook',
     getParentRoute: () => rootRouteImport,
   } as any)
-const ApiPublicBootstrapAdminRoute = ApiPublicBootstrapAdminRouteImport.update({
-  id: '/api/public/bootstrap-admin',
-  path: '/api/public/bootstrap-admin',
+const ApiPublicDescargarRoute = ApiPublicDescargarRouteImport.update({
+  id: '/api/public/descargar',
+  path: '/api/public/descargar',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -72,7 +72,7 @@ export interface FileRoutesByFullPath {
   '/compra-exitosa': typeof CompraExitosaRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/api/chat': typeof ApiChatRoute
-  '/api/public/bootstrap-admin': typeof ApiPublicBootstrapAdminRoute
+  '/api/public/descargar': typeof ApiPublicDescargarRoute
   '/api/public/mercadopago-webhook': typeof ApiPublicMercadopagoWebhookRoute
 }
 export interface FileRoutesByTo {
@@ -82,7 +82,7 @@ export interface FileRoutesByTo {
   '/compra-exitosa': typeof CompraExitosaRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/api/chat': typeof ApiChatRoute
-  '/api/public/bootstrap-admin': typeof ApiPublicBootstrapAdminRoute
+  '/api/public/descargar': typeof ApiPublicDescargarRoute
   '/api/public/mercadopago-webhook': typeof ApiPublicMercadopagoWebhookRoute
 }
 export interface FileRoutesById {
@@ -94,7 +94,7 @@ export interface FileRoutesById {
   '/compra-exitosa': typeof CompraExitosaRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/api/chat': typeof ApiChatRoute
-  '/api/public/bootstrap-admin': typeof ApiPublicBootstrapAdminRoute
+  '/api/public/descargar': typeof ApiPublicDescargarRoute
   '/api/public/mercadopago-webhook': typeof ApiPublicMercadopagoWebhookRoute
 }
 export interface FileRouteTypes {
@@ -106,7 +106,7 @@ export interface FileRouteTypes {
     | '/compra-exitosa'
     | '/admin'
     | '/api/chat'
-    | '/api/public/bootstrap-admin'
+    | '/api/public/descargar'
     | '/api/public/mercadopago-webhook'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -116,7 +116,7 @@ export interface FileRouteTypes {
     | '/compra-exitosa'
     | '/admin'
     | '/api/chat'
-    | '/api/public/bootstrap-admin'
+    | '/api/public/descargar'
     | '/api/public/mercadopago-webhook'
   id:
     | '__root__'
@@ -127,7 +127,7 @@ export interface FileRouteTypes {
     | '/compra-exitosa'
     | '/_authenticated/admin'
     | '/api/chat'
-    | '/api/public/bootstrap-admin'
+    | '/api/public/descargar'
     | '/api/public/mercadopago-webhook'
   fileRoutesById: FileRoutesById
 }
@@ -138,7 +138,7 @@ export interface RootRouteChildren {
   BibliotecaRoute: typeof BibliotecaRoute
   CompraExitosaRoute: typeof CompraExitosaRoute
   ApiChatRoute: typeof ApiChatRoute
-  ApiPublicBootstrapAdminRoute: typeof ApiPublicBootstrapAdminRoute
+  ApiPublicDescargarRoute: typeof ApiPublicDescargarRoute
   ApiPublicMercadopagoWebhookRoute: typeof ApiPublicMercadopagoWebhookRoute
 }
 
@@ -200,11 +200,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicMercadopagoWebhookRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/public/bootstrap-admin': {
-      id: '/api/public/bootstrap-admin'
-      path: '/api/public/bootstrap-admin'
-      fullPath: '/api/public/bootstrap-admin'
-      preLoaderRoute: typeof ApiPublicBootstrapAdminRouteImport
+    '/api/public/descargar': {
+      id: '/api/public/descargar'
+      path: '/api/public/descargar'
+      fullPath: '/api/public/descargar'
+      preLoaderRoute: typeof ApiPublicDescargarRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -228,7 +228,7 @@ const rootRouteChildren: RootRouteChildren = {
   BibliotecaRoute: BibliotecaRoute,
   CompraExitosaRoute: CompraExitosaRoute,
   ApiChatRoute: ApiChatRoute,
-  ApiPublicBootstrapAdminRoute: ApiPublicBootstrapAdminRoute,
+  ApiPublicDescargarRoute: ApiPublicDescargarRoute,
   ApiPublicMercadopagoWebhookRoute: ApiPublicMercadopagoWebhookRoute,
 }
 export const routeTree = rootRouteImport

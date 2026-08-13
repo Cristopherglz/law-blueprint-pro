@@ -34,22 +34,24 @@ export type AdminOverview = {
     coverUrl: string | null;
   }[];
   mercadoPagoConfigured: boolean;
+  webhookSecretConfigured: boolean;
 };
 
 export const getAdminOverview = createServerFn({ method: "POST" })
   .middleware([requireSupabaseAuth])
   .handler(async ({ context }): Promise<AdminOverview> => {
     await assertAdmin(context as any);
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { getMercadoPagoToken, EBOOK_BUCKET } = await import("./ebooks.server");
+    const { getMercadoPagoToken, resolveCoverUrl } = await import("./ebooks.server");
+    // Todas las lecturas usan la sesión del administrador (RLS), sin clave de servicio.
+    const supabase = context.supabase;
 
     const [{ data: orders }, { data: ebooks }] = await Promise.all([
-      supabaseAdmin
+      supabase
         .from("orders")
         .select("id, buyer_name, buyer_email, amount, currency, status, created_at, ebook_id, ebooks(title)")
         .order("created_at", { ascending: false })
         .limit(500),
-      supabaseAdmin
+      supabase
         .from("ebooks")
         .select("id, title, description, price, currency, is_published, file_path, cover_url")
         .order("created_at", { ascending: false }),
@@ -76,14 +78,6 @@ export const getAdminOverview = createServerFn({ method: "POST" })
 
     const ebooksOut = await Promise.all(
       (ebooks ?? []).map(async (e) => {
-        let coverUrl: string | null = null;
-        if (e.cover_url) {
-          coverUrl = e.cover_url.startsWith("http") || e.cover_url.startsWith("/")
-            ? e.cover_url
-            : ((
-                await supabaseAdmin.storage.from(EBOOK_BUCKET).createSignedUrl(e.cover_url, 60 * 60 * 6)
-              ).data?.signedUrl ?? null);
-        }
         return {
           id: e.id,
           title: e.title,
@@ -93,7 +87,7 @@ export const getAdminOverview = createServerFn({ method: "POST" })
           isPublished: e.is_published,
           filePath: e.file_path,
           coverPath: e.cover_url,
-          coverUrl,
+          coverUrl: await resolveCoverUrl(e.cover_url),
         };
       }),
     );
@@ -120,6 +114,7 @@ export const getAdminOverview = createServerFn({ method: "POST" })
       })),
       ebooks: ebooksOut,
       mercadoPagoConfigured: Boolean(getMercadoPagoToken()),
+      webhookSecretConfigured: Boolean(process.env["ORDER_CONFIRM_SECRET"]),
     };
   });
 
@@ -154,7 +149,7 @@ export const saveEbook = createServerFn({ method: "POST" })
   )
   .handler(async ({ data, context }) => {
     await assertAdmin(context as any);
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const supabase = context.supabase;
 
     const payload = {
       title: data.title,
@@ -167,11 +162,11 @@ export const saveEbook = createServerFn({ method: "POST" })
     };
 
     if (data.id) {
-      const { error } = await supabaseAdmin.from("ebooks").update(payload).eq("id", data.id);
+      const { error } = await supabase.from("ebooks").update(payload).eq("id", data.id);
       if (error) throw error;
       return { id: data.id };
     }
-    const { data: created, error } = await supabaseAdmin.from("ebooks").insert(payload).select("id").single();
+    const { data: created, error } = await supabase.from("ebooks").insert(payload).select("id").single();
     if (error) throw error;
     return { id: created.id };
   });
@@ -181,8 +176,7 @@ export const deleteEbook = createServerFn({ method: "POST" })
   .inputValidator((input: { id: string }) => ({ id: String(input?.id ?? "") }))
   .handler(async ({ data, context }) => {
     await assertAdmin(context as any);
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const { error } = await supabaseAdmin.from("ebooks").update({ is_published: false }).eq("id", data.id);
+    const { error } = await context.supabase.from("ebooks").update({ is_published: false }).eq("id", data.id);
     if (error) throw error;
     return { ok: true };
   });
