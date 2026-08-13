@@ -14,6 +14,59 @@ export type Database = {
   }
   public: {
     Tables: {
+      app_config: {
+        Row: {
+          created_at: string
+          key: string
+          value: string
+        }
+        Insert: {
+          created_at?: string
+          key: string
+          value: string
+        }
+        Update: {
+          created_at?: string
+          key?: string
+          value?: string
+        }
+        Relationships: []
+      }
+      ebook_files: {
+        Row: {
+          content_base64: string
+          created_at: string
+          ebook_id: string
+          filename: string
+          mime_type: string
+          updated_at: string
+        }
+        Insert: {
+          content_base64: string
+          created_at?: string
+          ebook_id: string
+          filename: string
+          mime_type?: string
+          updated_at?: string
+        }
+        Update: {
+          content_base64?: string
+          created_at?: string
+          ebook_id?: string
+          filename?: string
+          mime_type?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ebook_files_ebook_id_fkey"
+            columns: ["ebook_id"]
+            isOneToOne: true
+            referencedRelation: "ebooks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       ebooks: {
         Row: {
           cover_url: string | null
@@ -135,12 +188,82 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      assert_order_secret: { Args: { _secret: string }; Returns: undefined }
+      confirm_order_payment: {
+        Args: {
+          _order_id: string
+          _payment_id: string
+          _secret: string
+          _status: string
+        }
+        Returns: {
+          buyer_email: string
+          buyer_name: string
+          delivery_email_sent_at: string
+          download_token: string
+          ebook_title: string
+          has_file: boolean
+          id: string
+          status: string
+        }[]
+      }
+      create_order: {
+        Args: { _buyer_email: string; _buyer_name: string; _ebook_id: string }
+        Returns: {
+          ebook_description: string
+          ebook_title: string
+          order_amount: number
+          order_currency: string
+          order_id: string
+          order_token: string
+        }[]
+      }
+      download_purchase: {
+        Args: { _token: string }
+        Returns: {
+          content_base64: string
+          filename: string
+          mime_type: string
+        }[]
+      }
+      get_order_confirm_secret: { Args: never; Returns: string }
+      get_order_for_delivery: {
+        Args: { _order_id: string; _secret: string }
+        Returns: {
+          buyer_email: string
+          buyer_name: string
+          delivery_email_sent_at: string
+          download_token: string
+          ebook_title: string
+          has_file: boolean
+          id: string
+          status: string
+        }[]
+      }
+      get_purchase_by_token: {
+        Args: { _token: string }
+        Returns: {
+          buyer_name: string
+          ebook_title: string
+          has_file: boolean
+          id: string
+          status: string
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
         }
         Returns: boolean
+      }
+      mark_order_delivered: {
+        Args: { _order_id: string; _secret: string }
+        Returns: undefined
+      }
+      set_order_preference: {
+        Args: { _order_id: string; _preference_id: string; _secret: string }
+        Returns: undefined
       }
     }
     Enums: {
