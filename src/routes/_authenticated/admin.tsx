@@ -89,11 +89,35 @@ function AdminPanel() {
     [data],
   );
 
-  async function upload(target: File, folder: string) {
-    const path = `${folder}/${crypto.randomUUID()}-${target.name.replace(/[^\w.\-]/g, "_")}`;
+  // Portadas: van al almacenamiento (carpeta pública `covers/`), con la sesión del admin.
+  async function uploadCover(target: File) {
+    const path = `covers/${crypto.randomUUID()}-${target.name.replace(/[^\w.\-]/g, "_")}`;
     const { error: uploadError } = await supabase.storage.from("ebook-files").upload(path, target);
     if (uploadError) throw uploadError;
     return path;
+  }
+
+  // Archivo del ebook: se guarda en la base (tabla protegida) y se entrega sólo
+  // a quien pagó, a través de la página de descarga. No requiere clave de servicio.
+  async function uploadEbookFile(ebookId: string, target: File) {
+    if (target.size > 20 * 1024 * 1024) {
+      throw new Error("El archivo supera los 20 MB. Subí una versión más liviana.");
+    }
+    const buffer = new Uint8Array(await target.arrayBuffer());
+    let binary = "";
+    for (let i = 0; i < buffer.length; i += 8192) {
+      binary += String.fromCharCode(...buffer.subarray(i, i + 8192));
+    }
+    const { error: fileError } = await supabase.from("ebook_files").upsert(
+      {
+        ebook_id: ebookId,
+        filename: target.name,
+        mime_type: target.type || "application/pdf",
+        content_base64: btoa(binary),
+      },
+      { onConflict: "ebook_id" },
+    );
+    if (fileError) throw fileError;
   }
 
   function startEdit(ebook: NonNullable<typeof data>["ebooks"][number]) {
@@ -122,20 +146,20 @@ function AdminPanel() {
     setSaving(true);
     setMessage(null);
     try {
-      const filePath = file ? await upload(file, "files") : null;
-      const coverPath = cover ? await upload(cover, "covers") : null;
-      await saveFn({
+      const coverPath = cover ? await uploadCover(cover) : null;
+      const saved = await saveFn({
         data: {
           ...(form.id ? { id: form.id } : {}),
           title: form.title,
           description: form.description,
           price: Number(form.price || 0),
           currency: form.currency,
-          filePath,
+          filePath: file ? file.name : null,
           coverPath,
           isPublished: true,
         },
       });
+      if (file) await uploadEbookFile(saved.id, file);
       resetForm();
       setFormOpen(false);
       setMessage({ tone: "ok", text: form.id ? "Ebook actualizado." : "Ebook publicado correctamente." });
