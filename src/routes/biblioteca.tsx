@@ -5,7 +5,6 @@ import { useState } from "react";
 import { ArrowLeft, BookOpen, FileText, ShoppingCart, ShieldCheck, Mail, Download } from "lucide-react";
 import Navigation from "@/components/Navigation";
 import Footer from "@/sections/Footer";
-import ebookCover from "@/assets/ebook-contratos.png.asset.json";
 import { listEbooks, startCheckout, type PublicEbook } from "@/lib/ebooks.functions";
 
 export const Route = createFileRoute("/biblioteca")({
@@ -29,6 +28,8 @@ export const Route = createFileRoute("/biblioteca")({
     links: [{ rel: "canonical", href: "/biblioteca" }],
   }),
 });
+
+const FALLBACK_COVER = "/ebook-contratos.png";
 
 const whatsappBase =
   "https://api.whatsapp.com/send/?phone=5493764327285&type=phone_number&app_absent=0&text=";
@@ -164,7 +165,7 @@ function Biblioteca() {
           <article className="grid lg:grid-cols-[auto_1fr] gap-10 lg:gap-16 items-center bg-secondary border border-border p-8 sm:p-12">
             <div className="relative mx-auto w-full max-w-[320px]">
               <img
-                src={featured?.coverUrl ?? ebookCover.url}
+                src={featured?.coverUrl ?? FALLBACK_COVER}
                 alt={`Portada del ebook ${featured?.title ?? "Guía práctica para entender Contratos"}`}
                 className="w-full h-auto shadow-2xl"
                 loading="lazy"
